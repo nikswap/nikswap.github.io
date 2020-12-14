@@ -17,11 +17,11 @@ index=<index name> | stats values(*) AS * | transpose | table column | rename co
 {% endhighlight %}
 
 Count indexes:
-{% highlight fsharp %}
-| tstats count where index=* by index 
-| search index=T*-win OR T*-main
-| rex field=index "(?<technique>t\d+)[\.\-].0*" 
-| stats dc(technique)
-{% endhighlight %}
+#{% highlight fsharp %}
+#| tstats count where index=* by index 
+#| search index=T*-win OR T*-main
+#| rex field=index "(?<technique>t\d+)[\.\-].0*" 
+#| stats dc(technique)
+#{% endhighlight %}
 
 See more when I make a write up of what I solved in Holiday Hack 2020
