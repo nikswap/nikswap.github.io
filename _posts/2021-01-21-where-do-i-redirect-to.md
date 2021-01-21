@@ -16,7 +16,7 @@ Some findings:
 * In one case was there a difference when acccessing from http and from https
 
 The script that scans. This could be done in parallel to maximize the speed.
-{% hightlight python %}
+{% highlight python %}
 import requests
 import socket
 import time
