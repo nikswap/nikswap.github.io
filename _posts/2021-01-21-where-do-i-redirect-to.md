@@ -80,7 +80,7 @@ conn.close()
 {% endhighlight %}
 
 Using the following sql can all domains that seems suspicious be found:
-{% hightlight sql %}
+{% highlight sql %}
 SELECT
         domainnames.added_at
     ,   forwards.added_at
