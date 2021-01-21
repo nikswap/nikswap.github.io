@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Resaerching redirects of dk domains"
+title:  "Researching redirects of dk domains"
 date:   2021-01-21 12:00:00 +0100
 categories: python web-magic
 ---
