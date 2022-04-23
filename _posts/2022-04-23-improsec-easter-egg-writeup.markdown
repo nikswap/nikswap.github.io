@@ -15,13 +15,13 @@ At first we got a python script and a message that has been encoded using the py
 
 The pythons script have this code:
 
-{% highlight python %}
+```python
         a = PRNG()
         b = bytes([x ^ a.next() for x in data])
 
         for x, y in [((z & 0xf), ((z >> 4) & 0xf)) for z in b]:
             print(x, y, end=' ')
-{% endhighlight %}
+```
 
 This algorithm can be reversed to the following:
 
